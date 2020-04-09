@@ -572,6 +572,10 @@ div.status-detail {
       margin-top: 5px;
     }
 
+    div.row {
+      margin-bottom: 5px;
+    }
+
     div.tool_actions {
       width: 100%;
 
@@ -583,6 +587,10 @@ div.status-detail {
 
     span.tool_label {
       font-weight: bold;
+    }
+
+    div.transcript_file_view {
+      display: flex;
     }
   }
 }
