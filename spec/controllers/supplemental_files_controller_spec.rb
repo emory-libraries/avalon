@@ -18,3 +18,4 @@ RSpec.describe SupplementalFilesController, type: :controller do
   it_behaves_like "a nested controller for", MasterFile
   it_behaves_like "a nested controller for", MediaObject
 end
+
