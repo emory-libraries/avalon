@@ -526,7 +526,8 @@ div.status-detail {
         text-align: center;
       }
 
-      &:nth-of-type(2), &:nth-of-type(3) {
+      &:nth-of-type(2),
+      &:nth-of-type(3) {
         width: 25%;
       }
 
@@ -535,7 +536,8 @@ div.status-detail {
         text-align: left;
       }
 
-      &:nth-of-type(5), &:nth-of-type(6) {
+      &:nth-of-type(5),
+      &:nth-of-type(6) {
         width: 75px;
         text-align: center;
       }
@@ -703,8 +705,14 @@ h5.panel-title {
   content: '\f054';
 }
 
-#metadata_header h3 {
-  font-size: 18px;
+#metadata_header {
+  h3 {
+    font-size: 18px;
+  }
+
+  .tab-content {
+    padding-bottom: 20px;
+  }
 }
 
 .indicator {
