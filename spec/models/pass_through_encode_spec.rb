@@ -30,7 +30,7 @@ describe PassThroughEncode do
     allow(MasterFile).to receive(:find).with(master_file.id).and_return(master_file)
   end
 
-  describe 'create' do  
+  describe 'create' do
     context 'with S3 inputs' do
       let!(:altered_input) { Tempfile.new("sample.mp4") }
       let!(:altered_output) { Tempfile.new("sample.high.mp4") }
