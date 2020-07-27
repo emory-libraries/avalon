@@ -587,7 +587,7 @@ describe Admin::Collection do
       Settings.dropbox.path = "s3://#{bucket}/dropbox"
     end
 
-    it "should be able to handle special S3 avoidable characters and create object" do   
+    it "should be able to handle special S3 avoidable characters and create object" do
       remote_object = double(key: corrected_collection_name, bucket_name: bucket, exists?: false)
       allow(Aws::S3::Client).to receive(:new).and_return(my_client)
       allow(Aws::S3::Object).to receive(:new).and_return(remote_object)
