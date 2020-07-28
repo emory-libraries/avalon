@@ -17,7 +17,7 @@ require 'cancan/matchers'
 
 describe MediaObject do
   let(:media_object) { FactoryBot.create(:media_object) }
-  
+
   it 'assigns a noid id' do
     media_object = MediaObject.new
     expect { media_object.assign_id! }.to change { media_object.id }.from(nil).to(String)
@@ -929,7 +929,7 @@ describe MediaObject do
 
   describe '#merge!' do
     let(:media_objects) { [] }
-    
+
     before do
       2.times { media_objects << FactoryBot.create(:media_object, :with_master_file) }
     end
