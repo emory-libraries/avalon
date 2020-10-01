@@ -1,0 +1,119 @@
+@import 'fonts';
+@import 'variables';
+
+.branding-row {
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+
+.branding-header {
+  display: inline-block;
+
+  color: $dark-blue;
+  white-space: nowrap;
+  &:hover {
+    color: $branding-hover-color;
+    text-decoration: none;
+  }
+}
+
+.branding-header.logo {
+  padding-top: 14px;
+}
+
+.branding-header.text {
+  position: relative;
+  top: -20px;
+}
+
+.branding-header.organization {
+  line-height: 23px;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-family: $font-family-serif;
+  padding-left: 8px;
+}
+
+.branding-header.division {
+  padding-left: 8px;
+  font-size: 24px;
+  font-family: $font-family-sans-serif;
+  font-weight: $font-weight-bold;
+  line-height: 24px;
+}
+
+// Navbar nav
+//
+// Custom navbar navigation (doesn't require `.nav`, but does make use of `.nav-link`).
+
+.navbar {
+  max-width: 1170px;
+}
+
+li.list-group-item > .nav-link {
+  padding: map-get($spacers, 1) map-get($spacers, 3);
+}
+
+.navbar-nav {
+  li.nav-item {
+    a.nav-link {
+      font-family: $font-family-sans-serif;
+      font-weight: $nav-link-weight;
+      font-size: 11px;
+      color: $mid-blue;
+      text-transform: uppercase;
+      letter-spacing: 0.55px;
+      position: relative;
+      padding: 16px 10px;
+    }
+  }
+}
+@media (min-width: 768px) {
+  .nav-link:not(.last)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 18.75px;
+    height: 12px;
+    width: 1px;
+    background-color: $nav-divider-color;
+  }
+}
+
+a.nav-link.last {
+  padding-right: 0 !important;
+}
+
+.utility-nav,
+.non-collapse-navbar {
+  border: $navbar-border-width $navbar-border-color;
+  border-bottom-style: solid;
+}
+
+.utility-nav {
+  margin-bottom: map-get($spacers, 2);
+}
+
+@media (min-width: 768px) {
+  .navbar-collapse.utility-nav.collapse {
+    display: none !important;
+  }
+  .non-collapse-navbar {
+    display: flex;
+    flex-basis: auto;
+    flex-grow: 1;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+@media (max-width: 767px) {
+  .non-mobile-links {
+    display: none !important;
+  }
+}
+
+.navbar-toggler {
+  height: 50px;
+  width: 56px;
+}

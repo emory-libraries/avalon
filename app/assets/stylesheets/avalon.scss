@@ -13,7 +13,41 @@
  *   specific language governing permissions and limitations under the License.
  * ---  END LICENSE_HEADER BLOCK  ---
 */
-
+@import url(https://fonts.googleapis.com/css?family=Cardo:400,700|Open+Sans:400,700&display=swap);
+@import 'emory/advanced_search';
+@import 'emory/bookmark_clear_button';
+@import 'emory/bookmarks_header';
+@import 'emory/bookmarks_nav';
+@import 'emory/breadcrumbs';
+@import 'emory/cards';
+@import 'emory/citations';
+@import 'emory/collection_image';
+@import 'emory/colors';
+@import 'emory/constraint_button';
+@import 'emory/constraints';
+@import 'emory/copyright_card';
+@import 'emory/error_body';
+@import 'emory/explore_collections';
+@import 'emory/facets';
+@import 'emory/fonts';
+@import 'emory/footer';
+@import 'emory/footer_branding';
+@import 'emory/footer_branding_logo';
+@import 'emory/footer_branding_dropdown';
+@import 'emory/footer_list';
+@import 'emory/footer_placeholder';
+@import 'emory/footer_version';
+@import 'emory/footer_copyright';
+@import 'emory/navbar';
+@import 'emory/results_list';
+@import 'emory/search_form';
+@import 'emory/search_history';
+@import 'emory/sort_widgets';
+@import 'emory/show_button';
+@import 'emory/show_heading';
+@import 'emory/static_body';
+@import 'emory/static_headers';
+@import 'emory/hero_image';
 @import 'branding';
 @import 'avalon/mixins';
 @import 'avalon/accordions';
@@ -791,7 +825,7 @@ h5.panel-title {
 }
 
 .is-invalid {
-  border-color:$danger;
+  border-color: $danger;
 }
 
 .is-invalid:focus {
@@ -881,7 +915,7 @@ h5.panel-title {
 /*Encode dashboard progress bar */
 #encode-records {
   .progress {
-    background-color: #BCBEBF;
+    background-color: #bcbebf;
     text-align: left;
     position: relative;
     height: 13px;
@@ -917,7 +951,6 @@ h5.panel-title {
   display: flex;
 }
 
-
 /* DataTables in Playlists, Timelines, Persona Users, and Encode Dashboard */
 .dataTableToolsTop {
   text-align: right;
@@ -938,13 +971,16 @@ h5.panel-title {
 }
 
 // Action column of each table
-#Playlists, #Timelines, #users-table {
+#Playlists,
+#Timelines,
+#users-table {
   td:last-child {
     white-space: nowrap;
   }
 }
 
-#users-table th, td{
+#users-table th,
+td {
   padding-right: 6px !important;
 }
 
