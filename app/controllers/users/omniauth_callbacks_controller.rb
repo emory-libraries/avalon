@@ -89,20 +89,6 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     end
   end
 
-  def lti
-    @user = User.find_for_lti(request.env["omniauth.auth"])
-    @course = Course.find_by(context_id: request.env["omniauth.auth"].extra.context_id)
-    if !@user || !@course
-      redirect_to root_path
-      set_flash_message(:notice, :failure, kind: "LTI", reason: "you aren't authorized to use this application.")
-      return
-    end
-    save_lti_context
-    sign_in @user
-    set_flash_message(:notice, :success, kind: "LTI")
-    redirect_to root_path
-  end
-
   protected :find_user
 
   rescue_from Avalon::MissingUserId do |exception|
