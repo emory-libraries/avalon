@@ -74,7 +74,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     end
   end
 
-  def shibboleth
+  def saml
     @user = User.from_omniauth(request.env["omniauth.auth"])
 
     if @user.persisted?
