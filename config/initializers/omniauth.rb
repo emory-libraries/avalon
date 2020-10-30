@@ -1,6 +1,6 @@
 Rails.application.config.middleware.use OmniAuth::Builder do
   if !Rails.env.development? && !Rails.env.test?
-    provider :shibboleth,
+    provider :saml,
       :assertion_consumer_service_url        => Rails.application.config.assertion_consumer_service_url,
       :assertion_consumer_logout_service_url => Rails.application.config.assertion_consumer_logout_service_url,
       :issuer                                => Rails.application.config.issuer,
