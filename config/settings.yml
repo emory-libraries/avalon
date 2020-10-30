@@ -73,7 +73,6 @@ encode_throttling:
   update_jobs_spacing: 10
 auth:
   registerable: false
-  configuration:
     # <% if ENV['LTI_AUTH_KEY'] %>
     # - :name: Avalon Lti OAuth
     #   :provider: :lti
