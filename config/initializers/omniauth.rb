@@ -6,9 +6,9 @@ Rails.application.config.middleware.use OmniAuth::Builder do
       :issuer                                => Rails.application.config.issuer,
       :idp_sso_target_url                    => Rails.application.config.idp_sso_target_url,
       :idp_slo_target_url                    => Rails.application.config.idp_slo_target_url,
-      :idp_cert                              => Rails.application.config.idp_cert,
-      :certificate                           => Rails.application.config.certificate,
-      :private_key                           => Rails.application.config.private_key,
+      :idp_cert                              => Rails.application.config.idp_cert.chomp,
+      :certificate                           => Rails.application.config.certificate.chomp,
+      :private_key                           => Rails.application.config.private_key.chomp,
       :attribute_statements                  => Rails.application.config.attribute_statements,
       :uid_attribute                         => Rails.application.config.uid_attribute,
       :security                              => Rails.application.config.security
