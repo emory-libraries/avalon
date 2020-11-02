@@ -29,25 +29,27 @@ Unless required by applicable law or agreed to in writing, software distributed
   <% end %>
 
   <div <%= visible_providers ? "class=hidden" : "" %> id='email-box'>
-    <%= bootstrap_form_for resource, as: resource_name, url: session_path(resource_name, admin: true, email: true) do |f| %>
+    <% if AuthConfig.use_database_auth? %>
+      <%= bootstrap_form_for resource, as: resource_name, url: session_path(resource_name, admin: true, email: true) do |f| %>
 
-      <div class="form-group">
-        <%= f.text_field :login, autofocus: true, autocomplete: "username" %>
-      </div>
-
-      <div class="form-group">
-        <%= f.password_field :password, autocomplete: "off" %>
-      </div>
-
-      <% if devise_mapping.rememberable? -%>
         <div class="form-group">
-          <%= f.check_box :remember_me %>
+          <%= f.text_field :login, autofocus: true, autocomplete: "username" %>
         </div>
-      <% end -%>
 
-      <div class="actions form-group">
-        <%= f.submit "Connect", class: 'btn btn-primary' %>
-      </div>
+        <div class="form-group">
+          <%= f.password_field :password, autocomplete: "off" %>
+        </div>
+
+        <% if devise_mapping.rememberable? -%>
+          <div class="form-group">
+            <%= f.check_box :remember_me %>
+          </div>
+        <% end -%>
+
+        <div class="actions form-group">
+          <%= f.submit "Connect", class: 'btn btn-primary' %>
+        </div>
+      <% end %>
     <% end %>
     <p align='center' class='devise-links'>
       <%= render "devise/shared/links" %>

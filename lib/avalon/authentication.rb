@@ -35,6 +35,10 @@ module Avalon
       Config << { name: 'LTI', provider: :lti, hidden: true, params: { oauth_credentials: { ENV['LTI_AUTH_KEY'] => ENV['LTI_AUTH_SECRET'] } } }
     end
 
+    if ENV['SP_KEY']
+      Config << { name: 'saml', provider: :saml, hidden: false, params: {} }
+    end
+
     Providers = Config.reject {|provider| provider[:provider].blank? }
     VisibleProviders = Providers.reject {|provider| provider[:hidden]}
     HiddenProviders = Providers - VisibleProviders

@@ -72,7 +72,7 @@ encode_throttling:
   update_jobs_throttle_threshold: 3
   update_jobs_spacing: 10
 auth:
-  registerable: true
+  registerable: false
   configuration:
     <% if ENV['LTI_AUTH_KEY'] %>
     - :name: Avalon Lti OAuth
