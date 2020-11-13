@@ -85,10 +85,15 @@ class User < ActiveRecord::Base
     find_and_verify_by_username(login) || find_and_verify_by_email(login)
   end
 
+  def self.create_new_user(username, email, provider)
+    password = Devise.friendly_token[0, 20]
+    create(username: username, email: email, password: password, password_confirmation: password, provider: provider)
+  end
+
   def self.find_or_create_by_username_or_email(username, email, provider = 'local')
     find_and_verify_by_username(username) ||
       find_and_verify_by_email(email) ||
-      create(username: username, email: email, password: Devise.friendly_token[0, 20], provider: provider)
+      create_new_user(username, email, provider)
   end
 
   def self.from_api_token(token)
