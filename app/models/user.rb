@@ -171,9 +171,22 @@ class User < ActiveRecord::Base
   # a new one. Populate it with data we get from shibboleth.
   # @param [OmniAuth::AuthHash] auth
   def self.from_omniauth(auth)
-    begin
-      user = find_by!(provider: auth.provider, username: auth.uid.downcase)
-    rescue ActiveRecord::RecordNotFound
+    attrs = auth&.extra&.raw_info&.attributes # get attrs from saml response
+    groups = attrs.present? ? attrs["urn:oid:1.3.6.1.4.1.5923.1.5.1.1"] : [] # get groups from attrs saml response
+    refined_groups = []
+    # separate only CN value from each group
+    groups.each do |group|
+      refined_groups << group.partition(',').first.delete("CN=")
+    end
+    # partition the string so that ldap_groups is now an array without ','
+    ldap_groups = ENV['ADMIN_LDAP_GROUPS'].to_s.partition(',')
+    ldap_groups.delete(',')
+    # check if any values are same between the two groups, if yes, find or create user
+    if (ldap_groups & refined_groups).any? && auth.provider.present? && auth.uid.present?
+      user = find_or_create_by!(provider: auth.provider, username: auth.uid.downcase) do |u|
+        u.email = auth.info.net_id + '@emory.edu' unless auth.info.net_id == 'tezprox'
+      end
+    else
       log_omniauth_error(auth)
       return User.new
     end
@@ -185,7 +198,7 @@ class User < ActiveRecord::Base
   end
 
   def self.log_omniauth_error(auth)
-    if auth.uid.empty?
+    if auth.uid&.empty?
       Rails.logger.error "Nil user detected: Shibboleth didn't pass a uid for #{auth.inspect}"
     else
       # Log unauthorized logins to error.
