@@ -91,6 +91,11 @@ auth:
       :provider: :saml
       :hidden: false
     <% end %>
+    <% if ENV['SP_KEY'] %>
+    - :name: Saml
+      :provider: :saml
+      :hidden: false
+    <% end %>
 # google_analytics_tracking_id: "someid"
 supplemental_files:
   proxy: false
