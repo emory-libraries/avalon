@@ -173,8 +173,8 @@ describe User, :clean do
         provider: 'shibboleth',
         uid:      "P0000001",
         info:     {
-          display_name: "Brian Wilson",
-          uid:          'brianbboys1967'
+          first_name: "Brian Wilson",
+          net_id:     'brianbboys1967'
         }
       )
     end
@@ -186,10 +186,10 @@ describe User, :clean do
         expect(user.provider).to eq 'shibboleth'
       end
       it "has a uid" do
-        expect(user.uid).to eq auth_hash.info.uid
+        expect(user.uid).to eq auth_hash.info.net_id
       end
       it "has a name" do
-        expect(user.display_name).to eq auth_hash.info.display_name
+        expect(user.display_name).to eq auth_hash.info.first_name
       end
       it "has a PPID" do
         expect(user.ppid).to eq auth_hash.uid
@@ -202,23 +202,23 @@ describe User, :clean do
           provider: 'shibboleth',
           uid:      "P0000001",
           info:     {
-            display_name: "Boaty McBoatface",
-            uid:          'brianbboys1968'
+            first_name: "Boaty McBoatface",
+            net_id:     'brianbboys1968'
           }
         )
       end
 
       it "updates ppid and display_name with values from shibboleth" do
-        expect(user.uid).to eq auth_hash.info.uid
+        expect(user.uid).to eq auth_hash.info.net_id
         expect(user.ppid).to eq auth_hash.uid
-        expect(user.display_name).to eq auth_hash.info.display_name
+        expect(user.display_name).to eq auth_hash.info.first_name
         described_class.from_omniauth(updated_auth_hash)
         user.reload
         expect(user.ppid).to eq updated_auth_hash.uid
-        expect(user.uid).not_to eq auth_hash.info.uid
+        expect(user.uid).not_to eq auth_hash.info.net_id
         expect(user.ppid).to eq updated_auth_hash.uid
-        expect(user.display_name).not_to eq auth_hash.info.display_name
-        expect(user.display_name).to eq updated_auth_hash.info.display_name
+        expect(user.display_name).not_to eq auth_hash.info.first_name
+        expect(user.display_name).to eq updated_auth_hash.info.first_name
       end
     end
 
@@ -236,8 +236,8 @@ describe User, :clean do
           provider: 'shibboleth',
           uid:      'P0000003',
           info:     {
-            display_name: 'Fake Person',
-            uid:          'egnetid'
+            first_name: 'Fake Person',
+            net_id:     'egnetid'
           }
         )
       end
@@ -258,8 +258,8 @@ describe User, :clean do
           provider: 'shibboleth',
           uid:      '',
           info:     {
-            display_name: '',
-            uid:          ''
+            first_name: '',
+            net_id:     ''
           }
         )
       end

@@ -153,8 +153,8 @@ describe Users::OmniauthCallbacksController, type: :controller do
         provider: 'shibboleth',
         uid:      "P0000001",
         info:     {
-          display_name: "Brian Wilson",
-          uid:          'brianbboys1967'
+          first_name: "Brian Wilson",
+          net_id:     'brianbboys1967'
         }
       )
 
@@ -164,14 +164,14 @@ describe Users::OmniauthCallbacksController, type: :controller do
       end
 
       it "redirects to origin" do
-        post :shibboleth
+        post :saml
         expect(response.redirect_url).to eq 'http://test.host/example'
       end
     end
 
     context "when origin is missing" do
       it "redirects to dashboard" do
-        post :shibboleth
+        post :saml
         expect(response.redirect_url).to include 'http://test.host/'
       end
     end

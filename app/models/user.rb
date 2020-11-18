@@ -26,7 +26,7 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable
   # Registration is controlled via settings.yml
-  devise_list = [:omniauthable, :rememberable, :trackable, omniauth_providers: [:shibboleth], authentication_keys: [:login]]
+  devise_list = [:omniauthable, :rememberable, :trackable, omniauth_providers: [:saml], authentication_keys: [:login]]
   devise_list.prepend(:database_authenticatable) if AuthConfig.use_database_auth?
 
   devise(*devise_list)
@@ -177,15 +177,15 @@ class User < ActiveRecord::Base
       log_omniauth_error(auth)
       return User.new
     end
-    user.assign_attributes(display_name: auth.info.display_name, ppid: auth.uid, uid: auth.info.uid)
+    user.assign_attributes(display_name: auth.info.first_name, ppid: auth.uid, uid: auth.info.net_id)
     # tezprox@emory.edu isn't a real email address
-    user.email = auth.info.uid + '@emory.edu' unless auth.info.uid == 'tezprox'
+    user.email = auth.info.net_id + '@emory.edu' unless auth.info.net_id == 'tezprox'
     user.save
     user
   end
 
   def self.log_omniauth_error(auth)
-    if auth.info.uid.empty?
+    if auth.uid.empty?
       Rails.logger.error "Nil user detected: Shibboleth didn't pass a uid for #{auth.inspect}"
     else
       # Log unauthorized logins to error.
