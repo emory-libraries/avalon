@@ -86,8 +86,13 @@ class User < ActiveRecord::Base
   end
 
   def self.create_new_user(username, email, provider)
-    password = Devise.friendly_token[0, 20]
-    create(username: username, email: email, password: password, password_confirmation: password, provider: provider)
+    if provider == 'lti'
+      user = create(username: username, email: email, provider: provider)
+    else
+      password = Devise.friendly_token[0, 20]
+      user = create(username: username, email: email, password: password, password_confirmation: password, provider: provider)
+    end
+    user
   end
 
   def self.find_or_create_by_username_or_email(username, email, provider = 'local')
