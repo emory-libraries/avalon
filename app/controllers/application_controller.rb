@@ -17,6 +17,7 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   # Adds a few additional behaviors into the application controller
+  include Omniauth::Lti::Context
   include Blacklight::Controller
   include Hydra::Controller::ControllerBehavior
   # To deal with a load order issue breaking persona impersonate
