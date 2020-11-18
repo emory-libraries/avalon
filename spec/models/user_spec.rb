@@ -157,120 +157,237 @@ describe User, :clean do
     end
   end
 
-  describe 'from omniauth' do
-    before do
-      # User must exists before tests can run
-      described_class.create(provider:     'shibboleth',
-                             uid:          'brianbboys1967',
-                             ppid:         'P0000001',
-                             display_name: 'Brian Wilson',
-                             email:        'brianbboys1967@emory.edu',
-                             username:     'P0000001')
-    end
-
-    let(:auth_hash) do
-      OmniAuth::AuthHash.new(
-        provider: 'shibboleth',
-        uid:      "P0000001",
-        info:     {
-          first_name: "Brian Wilson",
-          net_id:     'brianbboys1967'
-        }
-      )
-    end
-
-    let(:user) { described_class.from_omniauth(auth_hash) }
-
-    context "has attributes" do
-      it "has Shibboleth as a provider" do
-        expect(user.provider).to eq 'shibboleth'
+  describe '#from_omniauth' do
+    describe 'with an existing user' do
+      before do
+        # User must exists before tests can run
+        described_class.create(provider:     'saml',
+                               uid:          'brianbboys1967',
+                               ppid:         'P0000001',
+                               display_name: 'Brian Wilson',
+                               email:        'brianbboys1967@emory.edu',
+                               username:     'P0000001')
+        ENV['ADMIN_LDAP_GROUPS']="GHE-USERS,DLP_DEVELOPERS"
       end
-      it "has a uid" do
-        expect(user.uid).to eq auth_hash.info.net_id
-      end
-      it "has a name" do
-        expect(user.display_name).to eq auth_hash.info.first_name
-      end
-      it "has a PPID" do
-        expect(user.ppid).to eq auth_hash.uid
-      end
-    end
 
-    context "updating an existing user" do
-      let(:updated_auth_hash) do
+      let(:auth_hash) do
         OmniAuth::AuthHash.new(
-          provider: 'shibboleth',
+          provider: 'saml',
           uid:      "P0000001",
           info:     {
-            first_name: "Boaty McBoatface",
-            net_id:     'brianbboys1968'
+            first_name: "Brian Wilson",
+            net_id:     'brianbboys1967'
+          },
+          extra: {
+            raw_info: {
+              attributes: {
+                "urn:oid:1.3.6.1.4.1.5923.1.5.1.1" => ["CN=GHE-USERS,OU=Groups,DC=emory,DC=edu"]
+              }
+            }
           }
         )
       end
 
-      it "updates ppid and display_name with values from shibboleth" do
-        expect(user.uid).to eq auth_hash.info.net_id
-        expect(user.ppid).to eq auth_hash.uid
-        expect(user.display_name).to eq auth_hash.info.first_name
-        described_class.from_omniauth(updated_auth_hash)
-        user.reload
-        expect(user.ppid).to eq updated_auth_hash.uid
-        expect(user.uid).not_to eq auth_hash.info.net_id
-        expect(user.ppid).to eq updated_auth_hash.uid
-        expect(user.display_name).not_to eq auth_hash.info.first_name
-        expect(user.display_name).to eq updated_auth_hash.info.first_name
+      let(:user) { described_class.from_omniauth(auth_hash) }
+
+      context "has attributes" do
+        it "has Shibboleth as a provider" do
+          expect(user.provider).to eq 'saml'
+        end
+        it "has a uid" do
+          expect(user.uid).to eq auth_hash.info.net_id
+        end
+        it "has a name" do
+          expect(user.display_name).to eq auth_hash.info.first_name
+        end
+        it "has a PPID" do
+          expect(user.ppid).to eq auth_hash.uid
+        end
+      end
+
+      context "updating an existing user" do
+        let(:updated_auth_hash) do
+          OmniAuth::AuthHash.new(
+            provider: 'saml',
+            uid:      "P0000001",
+            info:     {
+              first_name: "Boaty McBoatface",
+              net_id:     'brianbboys1968'
+            },
+            extra: {
+              raw_info: {
+                attributes: {
+                  "urn:oid:1.3.6.1.4.1.5923.1.5.1.1" => ["CN=GHE-USERS,OU=Groups,DC=emory,DC=edu"]
+                }
+              }
+            }
+          )
+        end
+
+        it "updates ppid and display_name with values from shibboleth" do
+          expect(user.uid).to eq auth_hash.info.net_id
+          expect(user.ppid).to eq auth_hash.uid
+          expect(user.display_name).to eq auth_hash.info.first_name
+          described_class.from_omniauth(updated_auth_hash)
+          user.reload
+          expect(user.ppid).to eq updated_auth_hash.uid
+          expect(user.uid).not_to eq auth_hash.info.net_id
+          expect(user.ppid).to eq updated_auth_hash.uid
+          expect(user.display_name).not_to eq auth_hash.info.first_name
+          expect(user.display_name).to eq updated_auth_hash.info.first_name
+        end
+      end
+
+      context "signing in twice" do
+        it "finds the original account instead of trying to make a new one" do
+          # login existing user second time
+          expect { described_class.from_omniauth(auth_hash) }
+            .not_to change { described_class.count }
+        end
+      end
+
+      context "attempting to sign in a user that is not in the group" do
+        let(:new_auth_hash) do
+          OmniAuth::AuthHash.new(
+            provider: 'saml',
+            uid:      'P0000003',
+            info:     {
+              first_name: 'Fake Person',
+              net_id:     'egnetid'
+            },
+            extra: {
+              raw_info: {
+                attributes: {
+                  "urn:oid:1.3.6.1.4.1.5923.1.5.1.1" => ["CN=INVALID-USERS,OU=Groups,DC=emory,DC=edu"]
+                }
+              }
+            }
+          )
+        end
+
+        it "does not allow a new user to sign in" do
+          expect { described_class.from_omniauth(new_auth_hash) }
+            .not_to change { described_class.count }
+          expect(Rails.logger).to receive(:error)
+          u = described_class.from_omniauth(new_auth_hash)
+          expect(u.class.name).to eql 'User'
+          expect(u.persisted?).to be false
+        end
+      end
+
+      context "invalid shibboleth data" do
+        let(:invalid_auth_hash) do
+          OmniAuth::AuthHash.new(
+            provider: 'saml',
+            uid:      '',
+            info:     {
+              first_name: '',
+              net_id:     ''
+            },
+            extra: {
+              raw_info: {
+                attributes: {
+                }
+              }
+            }
+          )
+        end
+
+        it "does not register new users" do
+          expect { described_class.from_omniauth(invalid_auth_hash) }
+            .not_to change { described_class.count }
+          expect(Rails.logger).to receive(:error)
+          u = described_class.from_omniauth(invalid_auth_hash)
+          expect(u.class.name).to eql 'User'
+          expect(u.persisted?).to be false
+        end
       end
     end
 
-    context "signing in twice" do
-      it "finds the original account instead of trying to make a new one" do
-        # login existing user second time
-        expect { described_class.from_omniauth(auth_hash) }
-          .not_to change { described_class.count }
-      end
-    end
-
-    context "attempting to sign in a new user" do
-      let(:new_auth_hash) do
-        OmniAuth::AuthHash.new(
-          provider: 'shibboleth',
-          uid:      'P0000003',
-          info:     {
-            first_name: 'Fake Person',
-            net_id:     'egnetid'
-          }
-        )
+    describe 'with a new user' do
+      before do
+        ENV['ADMIN_LDAP_GROUPS']="GHE-USERS,DLP_DEVELOPERS"
       end
 
-      it "does not allow a new user to sign in" do
-        expect { described_class.from_omniauth(new_auth_hash) }
-          .not_to change { described_class.count }
-        expect(Rails.logger).to receive(:error)
-        u = described_class.from_omniauth(new_auth_hash)
-        expect(u.class.name).to eql 'User'
-        expect(u.persisted?).to be false
-      end
-    end
+      context 'when provider and ppid are present' do
+        let(:auth_hash) do
+          OmniAuth::AuthHash.new(
+            provider: 'saml',
+            uid:      "P0000001",
+            info:     {
+              first_name: "Brian Wilson",
+              net_id:     'brianbboys1967'
+            },
+            extra: {
+              raw_info: {
+                attributes: {
+                  "urn:oid:1.3.6.1.4.1.5923.1.5.1.1" => ["CN=GHE-USERS,OU=Groups,DC=emory,DC=edu"]
+                }
+              }
+            }
+          )
+        end
 
-    context "invalid shibboleth data" do
-      let(:invalid_auth_hash) do
-        OmniAuth::AuthHash.new(
-          provider: 'shibboleth',
-          uid:      '',
-          info:     {
-            first_name: '',
-            net_id:     ''
-          }
-        )
+        it "adds new user to database with correct details" do
+          described_class.from_omniauth(auth_hash)
+          expect(User.first.provider).to eq 'saml'
+          expect(User.first.username).to eq 'P0000001'.downcase
+          expect(User.first.ppid).to eq 'P0000001'
+          expect(User.first.uid).to eq 'brianbboys1967'
+        end
       end
 
-      it "does not register new users" do
-        expect { described_class.from_omniauth(invalid_auth_hash) }
-          .not_to change { described_class.count }
-        expect(Rails.logger).to receive(:error)
-        u = described_class.from_omniauth(invalid_auth_hash)
-        expect(u.class.name).to eql 'User'
-        expect(u.persisted?).to be false
+      context 'when either provider or ppid is missing or invalid' do
+        let(:invalid_auth_hash) do
+          OmniAuth::AuthHash.new(
+            provider: 'saml',
+            info:     {
+              first_name: "Brian Wilson",
+              net_id:     'brianbboys1967'
+            },
+            extra: {
+              raw_info: {
+                attributes: {
+                  "urn:oid:1.3.6.1.4.1.5923.1.5.1.1" => ["CN=GHE-USERS,OU=Groups,DC=emory,DC=edu"]
+                }
+              }
+            }
+          )
+        end
+
+        it "does not add user to database" do
+          expect { described_class.from_omniauth(invalid_auth_hash) }
+            .not_to change { described_class.count }
+          expect(Rails.logger).to receive(:error)
+          u = described_class.from_omniauth(invalid_auth_hash)
+          expect(u.class.name).to eql 'User'
+          expect(u.persisted?).to be false
+        end
+      end
+
+      context 'when attrs and urn is missing' do
+        let(:invalid_auth_hash) do
+          OmniAuth::AuthHash.new(
+            provider: 'saml',
+            info:     {
+              first_name: "Brian Wilson",
+              net_id:     'brianbboys1967'
+            },
+            extra: {
+              raw_info: {
+              }
+            }
+          )
+        end
+
+        it "does not add user to database" do
+          expect { described_class.from_omniauth(invalid_auth_hash) }
+            .not_to change { described_class.count }
+          expect(Rails.logger).to receive(:error)
+          u = described_class.from_omniauth(invalid_auth_hash)
+          expect(u.class.name).to eql 'User'
+          expect(u.persisted?).to be false
+        end
       end
     end
   end

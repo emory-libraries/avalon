@@ -147,6 +147,7 @@ describe Users::OmniauthCallbacksController, type: :controller do
                   username:     'P0000001')
       request.env["devise.mapping"] = Devise.mappings[:user]
       request.env["omniauth.auth"] = OmniAuth.config.mock_auth[:shib]
+      ENV['ADMIN_LDAP_GROUPS']="GHE-USERS,DLP_DEVELOPERS"
     end
     OmniAuth.config.mock_auth[:shib] =
       OmniAuth::AuthHash.new(
@@ -155,6 +156,13 @@ describe Users::OmniauthCallbacksController, type: :controller do
         info:     {
           first_name: "Brian Wilson",
           net_id:     'brianbboys1967'
+        },
+        extra: {
+          raw_info: {
+            attributes: {
+              "urn:oid:1.3.6.1.4.1.5923.1.5.1.1" => ["CN=GHE-USERS,OU=Groups,DC=emory,DC=edu"]
+            }
+          }
         }
       )
 
