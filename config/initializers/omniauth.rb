@@ -12,6 +12,6 @@ Rails.application.config.middleware.use OmniAuth::Builder do
       :attribute_statements                  => Rails.application.config.attribute_statements,
       :uid_attribute                         => Rails.application.config.uid_attribute,
       :security                              => Rails.application.config.security
-    provider :lti
+    provider :lti, :oauth_credentials => Settings.auth.configuration.params.oauth_credentials
   end
 end
