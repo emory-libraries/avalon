@@ -91,7 +91,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def lti
     @user = User.find_for_lti(request.env["omniauth.auth"])
-    @course = Course.Course.find_by(context_id: request.env["omniauth.auth"].extra.context_id)
+    @course = Course.find_by(context_id: request.env["omniauth.auth"].extra.context_id)
     if !@user || !@course
       redirect_to root_path
       set_flash_message(:notice, :failure, kind: "LTI", reason: "you aren't authorized to use this application.")
