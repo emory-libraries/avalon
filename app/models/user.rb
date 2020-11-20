@@ -87,10 +87,10 @@ class User < ActiveRecord::Base
 
   def self.create_new_user(username, email, provider)
     if provider == 'lti'
-      user = create(username: username, email: email, provider: provider)
+      user = create!(username: username, email: email, provider: provider)
     else
       password = Devise.friendly_token[0, 20]
-      user = create(username: username, email: email, password: password, password_confirmation: password, provider: provider)
+      user = create!(username: username, email: email, password: password, password_confirmation: password, provider: provider)
     end
     user
   end
