@@ -53,7 +53,7 @@ class User < ActiveRecord::Base
     username || email
   end
 
-  def protected_email(email, uid)
+  def self.protected_email(email, uid)
     return "#{uid}@emory.edu" if email.nil?
     email
   end
