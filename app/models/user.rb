@@ -53,6 +53,11 @@ class User < ActiveRecord::Base
     username || email
   end
 
+  def self.protected_email(email, uid)
+    return "#{uid}@avalon.emory.edu" if email.nil?
+    email
+  end
+
   def remove_bookmarks
     Bookmark.where(user_id: self.id).destroy_all
   end
@@ -87,10 +92,10 @@ class User < ActiveRecord::Base
 
   def self.create_new_user(username, email, provider)
     if provider == 'lti'
-      user = create!(username: username, email: email, provider: provider)
+      user = create!(username: username, email: protected_email(email, username), provider: provider)
     else
       password = Devise.friendly_token[0, 20]
-      user = create!(username: username, email: email, password: password, password_confirmation: password, provider: provider)
+      user = create!(username: username, email: protected_email(email, username), password: password, password_confirmation: password, provider: provider)
     end
     user
   end
