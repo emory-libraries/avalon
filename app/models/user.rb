@@ -193,6 +193,7 @@ class User < ActiveRecord::Base
     user.assign_attributes(display_name: auth.info.first_name, ppid: auth.uid, uid: auth.info.net_id)
     # tezprox@emory.edu isn't a real email address
     user.email = auth.info.net_id + '@emory.edu' unless auth.info.net_id == 'tezprox'
+    Avalon::RoleControls.add_user_role(user.username, 'administrator') unless Avalon::RoleControls.user_roles(user.username).include?('administrator')
     user.save
     user
   end

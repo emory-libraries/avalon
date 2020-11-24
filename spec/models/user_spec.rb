@@ -224,7 +224,7 @@ describe User, :clean do
           )
         end
 
-        it "updates ppid and display_name with values from shibboleth" do
+        it "updates ppid and display_name and group with values from shibboleth" do
           expect(user.uid).to eq auth_hash.info.net_id
           expect(user.ppid).to eq auth_hash.uid
           expect(user.display_name).to eq auth_hash.info.first_name
@@ -235,6 +235,7 @@ describe User, :clean do
           expect(user.ppid).to eq updated_auth_hash.uid
           expect(user.display_name).not_to eq auth_hash.info.first_name
           expect(user.display_name).to eq updated_auth_hash.info.first_name
+          expect(Avalon::RoleControls.user_roles(user.username)).to include('administrator')
         end
       end
 
