@@ -34,7 +34,7 @@ module Avalon
 
     config.active_job.queue_adapter = :sidekiq
 
-    config.action_dispatch.default_headers = { 'X-Frame-Options' => 'ALLOWALL' }
+    config.action_dispatch.default_headers = { "Content-Security-Policy" => "FRAME-ANCESTORS #{ENV["CSP_FRAME_ANCESTORS"]}" }
 
     config.middleware.insert_before 0, Rack::Cors do
       allow do
