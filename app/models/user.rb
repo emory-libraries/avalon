@@ -31,8 +31,8 @@ class User < ActiveRecord::Base
 
   devise(*devise_list)
 
-  validates :username, presence: true, uniqueness: { case_sensitive: false }
-  validates :email, presence: true, uniqueness: { case_sensitive: false }
+  validates :username, presence: true, uniqueness: { scope: :provider, case_sensitive: false }
+  validates :email, presence: true, uniqueness: { scope: :provider, case_sensitive: false }
   validate :username_email_uniqueness
 
   before_destroy :remove_bookmarks
