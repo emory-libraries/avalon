@@ -74,7 +74,7 @@ describe 'checks navigation to external links' do
     expect(page).to have_link('Selected Items')
     expect(page).to have_link('Playlists')
     expect(page).to have_link('Sign out')
-    expect(page).to have_content(user.user_key)
+    expect(page).to have_content('You are signed in')
   end
 end
 
