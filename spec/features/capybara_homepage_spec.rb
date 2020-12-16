@@ -76,6 +76,12 @@ describe 'checks navigation to external links' do
     expect(page).to have_link('Sign out')
     expect(page).to have_content('You are signed in')
   end
+  it 'verifies search box is not present in header after login' do
+    user = FactoryBot.create(:administrator)
+    login_as user, scope: :user
+    visit'/catalog?q=&search_field=all_fields'
+    expect(page).not_to have_content('Emory Libraries\nSearch') # verifying a longer, more unqiue string; since there is `Search` for other things on the page
+  end
 end
 
 describe 'Sign in page' do
