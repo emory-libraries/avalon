@@ -82,11 +82,6 @@ auth:
     #     :oauth_credentials:
     #       <%= ENV['LTI_AUTH_KEY'] %>: <%= ENV['LTI_AUTH_SECRET'] %>
     # <% end %>
-    <% if ENV['SP_KEY'] %>
-    - :name: Saml
-      :provider: :saml
-      :hidden: false
-    <% end %>
 # google_analytics_tracking_id: "someid"
 supplemental_files:
   proxy: false
