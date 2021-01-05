@@ -14,7 +14,19 @@
  * ---  END LICENSE_HEADER BLOCK  ---
 */
 
+
 @import url(https://fonts.googleapis.com/css?family=Cardo:400,700|Open+Sans:400,700&display=swap);
+@import 'emory/variables';
+@import 'emory/fonts';
+@import 'emory/colors';
+@import 'emory/footer';
+@import 'emory/footer_branding';
+@import 'emory/footer_branding_logo';
+@import 'emory/footer_branding_dropdown';
+@import 'emory/footer_list';
+@import 'emory/footer_placeholder';
+@import 'emory/footer_version';
+@import 'emory/footer_copyright';
 @import 'branding';
 @import 'avalon/mixins';
 @import 'avalon/accordions';
@@ -31,6 +43,7 @@
 @import 'avalon/playlists';
 @import 'avalon/timeliner';
 @import 'avalon/loading-spinner';
+
 
 body {
   .page-container {
