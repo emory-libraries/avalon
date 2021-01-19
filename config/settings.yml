@@ -44,7 +44,7 @@ zookeeper:
   connection_str: "localhost:9983/configs"
 streaming:
   server: :generic
-  stream_token_ttl: 20 #minutes
+  stream_token_ttl: 120 #minutes
   content_path: '/srv/avalon/content'
   rtmp_base: 'rtmp://localhost/avalon'
   http_base: 'http://localhost:3000/streams'
