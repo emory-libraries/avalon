@@ -82,7 +82,9 @@ auth:
     #     :oauth_credentials:
     #       <%= ENV['LTI_AUTH_KEY'] %>: <%= ENV['LTI_AUTH_SECRET'] %>
     # <% end %>
-# google_analytics_tracking_id: "someid"
+<% if ENV['TRACKING_ID'] %>
+google_analytics_tracking_id: <%= ENV['TRACKING_ID'] %>
+<% end %>
 supplemental_files:
   proxy: false
 waveform:
