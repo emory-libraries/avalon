@@ -62,7 +62,7 @@ gem 'omniauth-lti', git: "https://github.com/avalonmediasystem/omniauth-lti.git"
 gem 'omniauth-saml', '~> 1.10', '>= 1.10.3'
 
 # Media Access & Transcoding
-gem 'active_encode', '~> 0.7.0'
+gem 'active_encode', '~> 2.0'
 gem 'audio_waveform-ruby', '~> 1.0.7', require: 'audio_waveform'
 gem 'browse-everything', '~> 0.13.0'
 gem 'fastimage'
@@ -160,7 +160,10 @@ group :aws, optional: true do
   gem 'aws-partitions'
   gem 'aws-sdk-rails'
   gem 'aws-sdk-cloudfront'
+  gem 'aws-sdk-cloudwatchevents'
+  gem 'aws-sdk-cloudwatchlogs'
   gem 'aws-sdk-elastictranscoder'
+  gem 'aws-sdk-mediaconvert', ">= 1.157.0"
   gem 'aws-sdk-s3'
   gem 'aws-sdk-ses'
   gem 'aws-sdk-sqs'

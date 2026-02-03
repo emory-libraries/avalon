@@ -162,9 +162,11 @@ GEM
     active_annotations (0.2.2)
       json-ld
       rdf-vocab (~> 2.1.0)
-    active_encode (0.7.0)
+    active_encode (2.0.0)
+      addressable (~> 2.8)
       rails
       sprockets (< 4)
+      retriable
     active_fedora-datastreams (0.2.0)
       active-fedora (>= 11.0.0.pre, < 13)
       nom-xml (>= 0.5.1)
@@ -299,6 +301,12 @@ GEM
     aws-sdk-cloudfront (1.26.0)
       aws-sdk-core (~> 3, >= 3.71.0)
       aws-sigv4 (~> 1.1)
+    aws-sdk-cloudwatchevents (1.91.0)
+      aws-sdk-core (~> 3, >= 3.225.0)
+      aws-sigv4 (~> 1.5)
+    aws-sdk-cloudwatchlogs (1.121.0)
+      aws-sdk-core (~> 3, >= 3.225.0)
+      aws-sigv4 (~> 1.5)
     aws-sdk-cloudhsm (1.20.0)
       aws-sdk-core (~> 3, >= 3.71.0)
       aws-sigv4 (~> 1.1)
@@ -724,6 +732,9 @@ GEM
     aws-sdk-quicksight (1.18.0)
       aws-sdk-core (~> 3, >= 3.71.0)
       aws-sigv4 (~> 1.1)
+    aws-sdk-mediaconvert (1.164.0)
+      aws-sdk-core (~> 3, >= 3.225.0)
+      aws-sigv4 (~> 1.5)
     aws-sdk-rails (3.1.0)
       aws-sdk-ses (~> 1)
       railties (>= 5.2.0)
@@ -1819,7 +1830,7 @@ DEPENDENCIES
   active-fedora (~> 12.1)
   active_annotations (~> 0.2.2)
   active_elastic_job!
-  active_encode (~> 0.7.0)
+  active_encode (~> 2.0)
   active_fedora-datastreams (~> 0.2.0)
   activejob-traffic_control
   activejob-uniqueness

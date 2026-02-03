@@ -1,6 +1,6 @@
 # Base stage for building gems
 FROM        ruby:2.5.5-stretch as bundle
-RUN         echo "deb http://deb.debian.org/debian stretch-backports main" >> /etc/apt/sources.list \
+RUN         echo "deb http://archive.debian.org/debian stretch main non-free contrib" >> /etc/apt/sources.list \
          && apt-get update && apt-get upgrade -y build-essential \
          && apt-get install -y --no-install-recommends \
             cmake \
@@ -40,7 +40,7 @@ RUN         apt-get update && apt-get install -y --no-install-recommends curl gn
          && curl -sL http://deb.nodesource.com/setup_8.x | bash - \
          && curl -O https://mediaarea.net/repo/deb/repo-mediaarea_1.0-6_all.deb && dpkg -i repo-mediaarea_1.0-6_all.deb \
          && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
-         && echo "deb http://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+         && echo "deb http://classi.yarnpkg.com/en/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
 
 RUN         apt-get update && apt-get install -y --no-install-recommends --allow-unauthenticated \
             yarn \
