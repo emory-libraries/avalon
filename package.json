@@ -1,16 +1,22 @@
 {
   "dependencies": {
     "@babel/core": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
+    "@babel/polyfill": "^7.0.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.0.0",
+    "@babel/plugin-proposal-class-properties": "^7.0.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+    "@babel/plugin-transform-runtime": "^7.0.0",
     "@rails/webpacker": "^5.2.2",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "cropperjs": "^1.5.5",
     "hls.js": "https://github.com/avalonmediasystem/hls.js#stricter_ts_probing",
     "prop-types": "^15.7.2",
     "react": "^16.8.4",
+    "react-structural-metadata-editor": "https://github.com/avalonmediasystem/react-structural-metadata-editor",
     "react-bootstrap": "^1.0.0",
     "react-dom": "^16.8.4",
-    "react-structural-metadata-editor": "https://github.com/avalonmediasystem/react-structural-metadata-editor",
     "react_ujs": "^2.4.4",
     "url-search-params-polyfill": "^7.0.1"
   },

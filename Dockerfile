@@ -88,7 +88,7 @@ RUN         bundle install --without development test --with aws production post
 
 
 # Install node modules
-FROM        node:14.18.0-bullseye-slim as node-modules
+FROM        node:16.18.0-bullseye-slim as node-modules
 RUN          echo "deb http://archive.debian.org/debian bullseye non-free contrib main" > /etc/apt/sources.list \
             && apt-get update && apt-get install -y --no-install-recommends build-essential gcc git python2 ca-certificates
 COPY        package.json .
@@ -103,15 +103,9 @@ COPY        --from=node-modules --chown=app:app /node_modules ./node_modules
 
 USER        app
 ENV         RAILS_ENV=production
-RUN         curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash \
-            && \. "$HOME/.nvm/nvm.sh" \
-            && nvm install 14 \
-            && npm install globalthis \
-            && npm install --global yarn \
-            yarn --version
+
 RUN         bundle install \
             &&  SECRET_KEY_BASE=$(ruby -r 'securerandom' -e 'puts SecureRandom.hex(64)') bundle exec rake webpacker:compile
-
 RUN         SECRET_KEY_BASE=$(ruby -r 'securerandom' -e 'puts SecureRandom.hex(64)') bundle exec rake assets:precompile
 RUN         cp config/controlled_vocabulary.yml.example config/controlled_vocabulary.yml
 
