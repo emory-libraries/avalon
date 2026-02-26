@@ -2,7 +2,7 @@
   "dependencies": {
     "@babel/core": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
-    "@rails/webpacker": "^4.0.2",
+    "@rails/webpacker": "^5.2.2",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "cropperjs": "^1.5.5",
     "hls.js": "https://github.com/avalonmediasystem/hls.js#stricter_ts_probing",
@@ -15,10 +15,11 @@
     "url-search-params-polyfill": "^7.0.1"
   },
   "devDependencies": {
+    "babel-loader": "^8.2.2",
     "html-webpack-plugin": "^3.2.0",
     "prop-types": "^15.7.2",
     "webpack-cli": "^3.2.3",
-    "webpack-dev-server": "^3.2.1"
+    "webpack-dev-server": "^4.2"
   },
   "resolutions": {
     "elliptic": "^6.5.2",

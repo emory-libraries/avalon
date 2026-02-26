@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 # Core rails
 gem 'bootsnap', require: false
 gem 'listen'
-gem 'rails', '=5.2.6'
+gem 'rails', '5.2.6'
 gem 'sprockets', '~>3.7.2'
 gem 'sqlite3'
 gem 'rake'
@@ -19,7 +19,7 @@ gem 'sass-rails', '~> 5.0'
 gem 'sass', '3.4.22'
 gem 'sprockets-es6'
 gem 'uglifier', '>= 1.3.0'
-gem 'webpacker'
+gem 'webpacker', '5.2.2'
 
 # Core Samvera
 gem 'active-fedora', '~> 12.1'
@@ -63,7 +63,7 @@ gem 'omniauth-lti', git: "https://github.com/avalonmediasystem/omniauth-lti.git"
 gem 'omniauth-saml', '~> 1.10', '>= 1.10.3'
 
 # Media Access & Transcoding
-gem 'active_encode', '~> 0.7.0'
+gem 'active_encode', '~> 2.0.0'
 gem 'audio_waveform-ruby', '~> 1.0.7', require: 'audio_waveform'
 gem 'browse-everything', '~> 0.13.0'
 gem 'fastimage'
@@ -161,7 +161,10 @@ group :aws, optional: true do
   gem 'aws-partitions'
   gem 'aws-sdk-rails'
   gem 'aws-sdk-cloudfront'
+  gem 'aws-sdk-cloudwatchevents'
+  gem 'aws-sdk-cloudwatchlogs'
   gem 'aws-sdk-elastictranscoder'
+  gem 'aws-sdk-mediaconvert', ">= 1.157.0"
   gem 'aws-sdk-s3'
   gem 'aws-sdk-ses'
   gem 'aws-sdk-sqs'
